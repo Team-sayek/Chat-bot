@@ -432,11 +432,14 @@ body {
     font-weight: 500;
     font-size: 16px;
 }
+
 .setting-option p {
     font-size: 14px;
     color: var(--text-secondary);
     margin-top: 4px;
 }
+
+/* Typing Indicator */
 .typing-indicator {
     display: flex;
     align-items: center;
@@ -475,34 +478,7 @@ body {
     }
 }
 
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-    }
-    
-    .sidebar {
-        width: 100%;
-        height: auto;
-    }
-    
-    .chat-history {
-        display: none;
-    }
-    
-    .message {
-        max-width: 95%;
-    }
-    
-    .chat-header, .input-area {
-        padding: 16px 20px;
-    }
-    
-    .chat-messages {
-        padding: 20px;
-    }
-}
-
-
+/* Formatted Content Styles */
 .formatted-content {
     line-height: 1.6;
 }
@@ -558,6 +534,7 @@ body {
     color: var(--text-secondary);
 }
 
+/* Code Block Styling */
 .code-block {
     background: var(--bg-color);
     border: 1px solid var(--border-color);
@@ -630,9 +607,12 @@ body {
     font-weight: 600;
     color: var(--text-primary);
 }
+
 .formatted-content tr:hover {
     background: var(--bg-color);
 }
+
+/* Dark theme adjustments for code */
 [data-theme="dark"] .code-block {
     background: #1a1a1a;
     border-color: #333;
@@ -646,4 +626,225 @@ body {
 [data-theme="dark"] .inline-code {
     background: #2d2d2d;
     color: #8cc4ff;
+}
+
+/* Icon button transitions */
+.icon-btn i {
+    transition: transform 0.3s ease;
+}
+
+.icon-btn:hover i {
+    transform: scale(1.1);
+}
+
+/* Ensure theme toggle icon has proper specificity */
+#themeToggle i {
+    font-family: 'Font Awesome 6 Free' !important;
+    font-weight: 900 !important;
+}
+
+/* Prevent any other styles from overriding */
+.header-actions .icon-btn#themeToggle i {
+    font-family: 'Font Awesome 6 Free' !important;
+    font-weight: 900 !important;
+}
+
+[data-theme="dark"] .chat-header {
+    background: var(--sidebar-bg);
+}
+
+[data-theme="dark"] .input-area {
+    background: var(--sidebar-bg);
+}
+
+/* ===== MOBILE RESPONSIVE STYLES ===== */
+/* ===== MOBILE RESPONSIVE STYLES ===== */
+@media (max-width: 768px) {
+    body {
+        padding: 0;
+        overflow: hidden;
+        height: 100vh;
+    }
+    
+    .container {
+        flex-direction: column;
+        height: 100vh;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+    
+    /* COMPLETELY HIDE SIDEBAR */
+    .sidebar {
+        display: none !important;
+    }
+    
+    /* CHAT AREA TAKES FULL SCREEN */
+    .chat-area {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    /* HEADER WITH NEW CHAT BUTTON */
+    .chat-header {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--chat-bg);
+        position: relative;
+        min-height: 60px;
+        flex-shrink: 0;
+    }
+    
+    /* SIMPLE SOLUTION: SHOW NEW CHAT BUTTON IN HEADER */
+    .new-chat-btn {
+        display: flex !important; /* Force display */
+        width: auto !important;
+        padding: 8px 12px !important;
+        font-size: 12px !important;
+        margin: 0;
+        align-items: center;
+        gap: 6px;
+    }
+    
+    /* HEADER CONTENT */
+    .header-content {
+        text-align: center;
+        flex: 1;
+        margin: 0 10px;
+    }
+    
+    .header-content h1 {
+        font-size: 18px;
+        margin-bottom: 2px;
+        white-space: nowrap;
+    }
+    
+    .header-content p {
+        font-size: 11px;
+        white-space: nowrap;
+    }
+    
+    /* Rest of your mobile styles remain the same... */
+    .chat-messages {
+        flex: 1;
+        padding: 16px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .message {
+        max-width: 95%;
+        gap: 12px;
+    }
+    
+    .avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+    
+    .message-content {
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+    
+    .input-area {
+        padding: 12px 16px;
+        border-top: 1px solid var(--border-color);
+        background: var(--chat-bg);
+        flex-shrink: 0;
+    }
+    
+    .input-container {
+        padding: 10px 14px;
+        margin-bottom: 8px;
+    }
+    
+    #userInput {
+        font-size: 16px;
+    }
+    
+    .send-btn {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .disclaimer {
+        font-size: 11px;
+    }
+}
+
+/* SMALL MOBILE DEVICES */
+@media (max-width: 480px) {
+    .chat-header {
+        padding: 10px 12px;
+    }
+    
+    .new-chat-btn {
+        left: 12px;
+        padding: 6px 10px !important;
+        font-size: 11px !important;
+    }
+    
+    .header-content h1 {
+        font-size: 16px;
+    }
+    
+    .header-content p {
+        font-size: 10px;
+    }
+    
+    .header-actions .icon-btn {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .chat-messages {
+        padding: 12px;
+    }
+    
+    .message {
+        max-width: 98%;
+        gap: 8px;
+    }
+    
+    .avatar {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .message-content {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+    
+    .input-area {
+        padding: 10px 12px;
+    }
+}
+
+/* TOUCH DEVICE IMPROVEMENTS */
+@media (hover: none) and (pointer: coarse) {
+    .new-chat-btn,
+    .send-btn,
+    .icon-btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    #userInput {
+        min-height: 44px;
+    }
 }
