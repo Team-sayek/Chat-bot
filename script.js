@@ -12,7 +12,7 @@ const currentMode = document.getElementById('currentMode');
 // API Configuration - UPDATE THIS WITH YOUR API KEY
 let API_CONFIG = {
     provider: 'gemini', // 'gemini' or 'custom'
-    geminiKey: 'AIzaSyAWzV_zRGow_5ruLuNRCv06cQ1AXrICsbo', // ← REPLACE WITH YOUR ACTUAL KEY
+    geminiKey: '', // ← REPLACE WITH YOUR ACTUAL KEY
     customEndpoint: '',
     customKey: '',
     useMock: false // ← Set to false to use real API
@@ -704,4 +704,5 @@ window.clearAllData = function() {
 };
 
 // Initialize when page loads
+
 document.addEventListener('DOMContentLoaded', initChat);
