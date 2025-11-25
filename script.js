@@ -9,33 +9,19 @@ const settingsModal = document.getElementById('settingsModal');
 const closeModal = document.getElementById('closeModal');
 const currentMode = document.getElementById('currentMode');
 
-const keyFragments = {
-  start: 'AIza',
-  middle1: 'SyB3W',
-  middle2: 'RxsuS',
-  middle3: '3ve8B',
-  middle4: 'k57rv',
-  middle5: 'BvAAN',
-  middle6: '7cAiV',
-  end: 'MWq4E',
-  fake1: 'fake_data_1',
-  fake2: 'fake_data_2'
-};
+// API Configuration - Obfuscated
+const keyParts = [
+  'AIzaSyB3W',
+  'RxsuS3v',
+  'e8Bk57r',
+  'vBvAAN7',
+  'cAiVMWq',
+  '4E'
+];
 
-function reconstructAPIKey() {
-  return keyFragments.start + 
-         keyFragments.middle1 + 
-         keyFragments.middle2 +
-         keyFragments.middle3 +
-         keyFragments.middle4 +
-         keyFragments.middle5 +
-         keyFragments.middle6 +
-         keyFragments.end;
-}
-
-const API_CONFIG = {
+let API_CONFIG = {
     provider: 'gemini',
-    geminiKey: reconstructAPIKey(),
+    geminiKey: keyParts.join(''),
     customEndpoint: '',
     customKey: '',
     useMock: false
@@ -49,7 +35,7 @@ function initChat() {
     console.log('Initializing chat...');
     console.log('API Config:', API_CONFIG);
     
-    // Load theme preference, API config, and chat history
+    // Load theme preference and API config
     loadTheme();
     loadAPIConfig();
     loadChatHistory();
@@ -79,10 +65,81 @@ function initChat() {
     // Auto-resize textarea
     userInput.addEventListener('input', autoResizeTextarea);
     
+    // Mobile-specific enhancements
+    initMobileFeatures();
+    
+    // Fix mobile scrolling
+    fixMobileScrolling();
+    
     // Focus on input field
     userInput.focus();
     
     console.log('Chat initialized successfully');
+}
+
+// Fix mobile scrolling issues
+function fixMobileScrolling() {
+    // Ensure chat messages are scrolled to bottom on load
+    setTimeout(() => {
+        scrollToBottom();
+    }, 500);
+    
+    // Fix for mobile browser address bar hiding
+    window.addEventListener('load', () => {
+        setTimeout(scrollToBottom, 300);
+    });
+    
+    // Handle orientation changes
+    window.addEventListener('orientationchange', () => {
+        setTimeout(scrollToBottom, 300);
+    });
+}
+
+// Add mobile-specific features
+function initMobileFeatures() {
+    console.log('Initializing mobile features...');
+    
+    // Prevent zoom on input focus (iOS)
+    const viewportMeta = document.querySelector('meta[name=viewport]');
+    if (viewportMeta) {
+        userInput.addEventListener('focus', () => {
+            viewportMeta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0');
+        });
+        
+        userInput.addEventListener('blur', () => {
+            viewportMeta.setAttribute('content', 'width=device-width, initial-scale=1.0');
+        });
+    }
+    
+    // Better touch handling
+    if ('ontouchstart' in window) {
+        document.body.classList.add('touch-device');
+        
+        // Improve button responsiveness on touch devices
+        [sendButton, newChatButton, themeToggle, settingsButton].forEach(button => {
+            if (button) {
+                button.style.cursor = 'pointer';
+                button.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.95)';
+                });
+                button.addEventListener('touchend', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            }
+        });
+    }
+    
+    // Handle virtual keyboard
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            console.log('Window resized, scrolling to bottom...');
+            scrollToBottom();
+        }, 300);
+    });
+    
+    console.log('Mobile features initialized successfully');
 }
 
 // Send a message
@@ -159,7 +216,6 @@ async function callGeminiAPI(message) {
     const endpoints = [
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${API_CONFIG.geminiKey}`,
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_CONFIG.geminiKey}`,
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite-thinking:generateContent?key=${API_CONFIG.geminiKey}`,
     ];
     
     let lastError = null;
@@ -647,7 +703,17 @@ function autoResizeTextarea() {
 
 // Scroll to bottom of chat
 function scrollToBottom() {
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+    if (chatMessages) {
+        setTimeout(() => {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Additional method for mobile browsers
+            const lastMessage = chatMessages.lastElementChild;
+            if (lastMessage) {
+                lastMessage.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }
+        }, 100);
+    }
 }
 
 // === API CONFIGURATION FUNCTIONS ===
@@ -713,7 +779,8 @@ window.getGeminiModels = function() {
     return [
         'gemini-2.0-flash-lite (Free Tier - Recommended)',
         'gemini-2.0-flash (Latest & Most Capable)',
-        'gemini-2.5-flash-lite-thinking (Experimental)',
+        'gemini-2.0-flash-thinking (Experimental)',
+        'gemini-1.5-flash-latest (Fallback)'
     ];
 };
 
@@ -727,6 +794,4 @@ window.clearAllData = function() {
 };
 
 // Initialize when page loads
-
 document.addEventListener('DOMContentLoaded', initChat);
-
