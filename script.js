@@ -11,12 +11,12 @@ const currentMode = document.getElementById('currentMode');
 
 // API Configuration - Obfuscated
 const keyParts = [
-  //'AIzaSyB3W',
-  //'RxsuS3v',
-  //'e8Bk57r',
-  //'vBvAAN7',
-  //'cAiVMWq',
-  //'4E'
+  'AIzaSyB3W',
+  'RxsuS3v',
+  'e8Bk57r',
+  'vBvAAN7',
+  'cAiVMWq',
+  '4E'
 ];
 
 let API_CONFIG = {
@@ -795,4 +795,5 @@ window.clearAllData = function() {
 
 // Initialize when page loads
 document.addEventListener('DOMContentLoaded', initChat);
+
 
